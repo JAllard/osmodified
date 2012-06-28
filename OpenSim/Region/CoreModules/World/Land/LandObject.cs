@@ -45,7 +45,7 @@ namespace OpenSim.Region.CoreModules.World.Land
 
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         #pragma warning disable 0429
-        private const int landArrayMax = ((int)((int)Constants.RegionSize / 4) >= 64) ? (int)((int)Constants.RegionSize / 4) : 64;
+        private const int landArrayMax = ((int)((int)Constants.RegionWidth / 4) >= 64) ? (int)((int)Constants.RegionWidth / 4) : 64;
         #pragma warning restore 0429
         private bool[,] m_landBitmap = new bool[landArrayMax,landArrayMax];
 
@@ -148,7 +148,7 @@ namespace OpenSim.Region.CoreModules.World.Land
         /// <returns>Returns true if the piece of land contains the specified point</returns>
         public bool ContainsPoint(int x, int y)
         {
-            if (x >= 0 && y >= 0 && x < Constants.RegionSize && y < Constants.RegionSize)
+            if (x >= 0 && y >= 0 && x < Constants.RegionWidth && y < Constants.RegionWidth)
             {
                 return (LandBitmap[x / 4, y / 4] == true);
             }
@@ -504,8 +504,8 @@ namespace OpenSim.Region.CoreModules.World.Land
                 try
                 {
                     over =
-                        m_scene.LandChannel.GetLandObject(Util.Clamp<int>((int)Math.Round(avatar.AbsolutePosition.X), 0, ((int)Constants.RegionSize - 1)),
-                                                          Util.Clamp<int>((int)Math.Round(avatar.AbsolutePosition.Y), 0, ((int)Constants.RegionSize - 1)));
+                        m_scene.LandChannel.GetLandObject(Util.Clamp<int>((int)Math.Round(avatar.AbsolutePosition.X), 0, ((int)Constants.RegionWidth - 1)),
+                                                          Util.Clamp<int>((int)Math.Round(avatar.AbsolutePosition.Y), 0, ((int)Constants.RegionWidth - 1)));
                 }
                 catch (Exception)
                 {
@@ -673,21 +673,21 @@ namespace OpenSim.Region.CoreModules.World.Land
                 }
             }
             int tx = min_x * 4;
-            if (tx > ((int)Constants.RegionSize - 1))
-                tx = ((int)Constants.RegionSize - 1);
+            if (tx > ((int)Constants.RegionWidth - 1))
+                tx = ((int)Constants.RegionWidth - 1);
             int ty = min_y * 4;
-            if (ty > ((int)Constants.RegionSize - 1))
-                ty = ((int)Constants.RegionSize - 1);
+            if (ty > ((int)Constants.RegionWidth - 1))
+                ty = ((int)Constants.RegionWidth - 1);
             LandData.AABBMin =
                 new Vector3((float) (min_x * 4), (float) (min_y * 4),
                               (float) m_scene.Heightmap[tx, ty]);
 
             tx = max_x * 4;
-            if (tx > ((int)Constants.RegionSize - 1))
-                tx = ((int)Constants.RegionSize - 1);
+            if (tx > ((int)Constants.RegionWidth - 1))
+                tx = ((int)Constants.RegionWidth - 1);
             ty = max_y * 4;
-            if (ty > ((int)Constants.RegionSize - 1))
-                ty = ((int)Constants.RegionSize - 1);
+            if (ty > ((int)Constants.RegionWidth - 1))
+                ty = ((int)Constants.RegionWidth - 1);
             LandData.AABBMax =
                 new Vector3((float) (max_x * 4), (float) (max_y * 4),
                               (float) m_scene.Heightmap[tx, ty]);
@@ -728,7 +728,7 @@ namespace OpenSim.Region.CoreModules.World.Land
 
         public bool[,] BasicFullRegionLandBitmap()
         {
-            return GetSquareLandBitmap(0, 0, (int) Constants.RegionSize, (int) Constants.RegionSize);
+            return GetSquareLandBitmap(0, 0, (int)Constants.RegionWidth, (int)Constants.RegionWidth);
         }
         
         public bool[,] GetSquareLandBitmap(int start_x, int start_y, int end_x, int end_y)

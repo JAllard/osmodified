@@ -1606,7 +1606,7 @@ namespace OpenSim.Region.Framework.Scenes
                 
                 // Non standard region size.    If there's an old terrain in the database, it might read past the buffer
                 #pragma warning disable 0162
-                if ((int)Constants.RegionSize != 256)
+                if ((int)Constants.RegionSize != (int)Constants.RegionWidth)
                 {
                     Heightmap = new TerrainChannel();
 

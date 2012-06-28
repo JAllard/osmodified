@@ -1170,12 +1170,16 @@ namespace OpenSim.Region.ClientStack.LindenUDP
         {
             try
             {
-                int[] patches = new int[] { py * 16 + px };
-                float[] heightmap = (map.Length == 65536) ?
-                    map :
-                    LLHeightFieldMoronize(map);
+                int[] x = new[] {px};
+                int[] y = new[] {py};
 
-                LayerDataPacket layerpack = TerrainCompressor.CreateLandPacket(heightmap, patches);
+                byte type = (byte)TerrainPatch.LayerType.Land;
+                if (Constants.RegionWidth > 256)
+                    type++;
+
+                LayerDataPacket layerpack = AuroraTerrainCompressor.CreateLandPacket(map, x, y,
+                    type, (int)Constants.RegionWidth,
+                    (int)Constants.RegionWidth);
                 layerpack.Header.Reliable = true;
 
                 OutPacket(layerpack, ThrottleOutPacketType.Land);
@@ -1258,7 +1262,8 @@ namespace OpenSim.Region.ClientStack.LindenUDP
                 }
             }
 
-            LayerDataPacket layerpack = TerrainCompressor.CreateLayerDataPacket(patches, TerrainPatch.LayerType.Wind);
+            LayerDataPacket layerpack = AuroraTerrainCompressor.CreateLayerDataPacket(patches, 
+                (byte)TerrainPatch.LayerType.Wind, 256, 256);
             layerpack.Header.Zerocoded = true;
             OutPacket(layerpack, ThrottleOutPacketType.Wind);
         }
@@ -1282,7 +1287,8 @@ namespace OpenSim.Region.ClientStack.LindenUDP
                 }
             }
 
-            LayerDataPacket layerpack = TerrainCompressor.CreateLayerDataPacket(patches, TerrainPatch.LayerType.Cloud);
+            LayerDataPacket layerpack = AuroraTerrainCompressor.CreateLayerDataPacket(patches, 
+                (byte)TerrainPatch.LayerType.Cloud, 256, 256);
             layerpack.Header.Zerocoded = true;
             OutPacket(layerpack, ThrottleOutPacketType.Cloud);
         }

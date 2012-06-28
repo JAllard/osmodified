@@ -45,16 +45,16 @@ namespace OpenSim.Region.Framework.Scenes
 
         public TerrainChannel()
         {
-            map = new double[Constants.RegionSize, Constants.RegionSize];
-            taint = new bool[Constants.RegionSize / 16, Constants.RegionSize / 16];
+            map = new double[Constants.RegionWidth, Constants.RegionWidth];
+            taint = new bool[Constants.RegionWidth / 16, Constants.RegionWidth / 16];
 
             PinHeadIsland();
         }
 
         public TerrainChannel(String type)
         {
-            map = new double[Constants.RegionSize, Constants.RegionSize];
-            taint = new bool[Constants.RegionSize / 16, Constants.RegionSize / 16];
+            map = new double[Constants.RegionWidth, Constants.RegionWidth];
+            taint = new bool[Constants.RegionWidth / 16, Constants.RegionWidth / 16];
 
             if (type.Equals("flat"))
                 FlatLand();
@@ -72,8 +72,8 @@ namespace OpenSim.Region.Framework.Scenes
         {
             if (createMap)
             {
-                map = new double[Constants.RegionSize,Constants.RegionSize];
-                taint = new bool[Constants.RegionSize / 16,Constants.RegionSize / 16];
+                map = new double[Constants.RegionWidth, Constants.RegionWidth];
+                taint = new bool[Constants.RegionWidth / 16, Constants.RegionWidth / 16];
             }
         }
 
@@ -239,14 +239,14 @@ namespace OpenSim.Region.Framework.Scenes
         private void PinHeadIsland()
         {
             int x;
-            for (x = 0; x < Constants.RegionSize; x++)
+            for (x = 0; x < Constants.RegionWidth; x++)
             {
                 int y;
-                for (y = 0; y < Constants.RegionSize; y++)
+                for (y = 0; y < Constants.RegionWidth; y++)
                 {
                     map[x, y] = TerrainUtil.PerlinNoise2D(x, y, 2, 0.125) * 10;
-                    double spherFacA = TerrainUtil.SphericalFactor(x, y, Constants.RegionSize / 2.0, Constants.RegionSize / 2.0, 50) * 0.01;
-                    double spherFacB = TerrainUtil.SphericalFactor(x, y, Constants.RegionSize / 2.0, Constants.RegionSize / 2.0, 100) * 0.001;
+                    double spherFacA = TerrainUtil.SphericalFactor(x, y, Constants.RegionWidth / 2.0, Constants.RegionWidth / 2.0, 50) * 0.01;
+                    double spherFacB = TerrainUtil.SphericalFactor(x, y, Constants.RegionWidth / 2.0, Constants.RegionWidth / 2.0, 100) * 0.001;
                     if (map[x, y] < spherFacA)
                         map[x, y] = spherFacA;
                     if (map[x, y] < spherFacB)
@@ -258,10 +258,10 @@ namespace OpenSim.Region.Framework.Scenes
         private void FlatLand()
         {
             int x;
-            for (x = 0; x < Constants.RegionSize; x++)
+            for (x = 0; x < Constants.RegionWidth; x++)
             {
                 int y;
-                for (y = 0; y < Constants.RegionSize; y++)
+                for (y = 0; y < Constants.RegionWidth; y++)
                     map[x, y] = 21;
             }
         }
